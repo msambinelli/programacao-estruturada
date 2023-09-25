@@ -1,4 +1,4 @@
-'''L\tikz[remember picture]{\coordinate (ipf);}L'''def maximo(a, b):'''L\tikz[remember picture]{\coordinate (fpf);}L'''
+def maximo(a, b):
     if a > b:
         return a
     else:
