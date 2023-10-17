@@ -1,0 +1,3 @@
+struct ficha_aluno aluno;
+...
+printf("Aluno: %s\n", aluno.nome);
