@@ -1,0 +1,386 @@
+%!TEX program = xelatex
+\documentclass{beamer}
+\input{../common.tex}
+\usepackage[brazil]{babel} % necessário para o plugin LTeX
+
+\tikzset{cell/.style = {draw, rectangle, minimum width=1.5cm, minimum height=0.5cm}}
+
+\title{MC-202\\
+Curso de C --- Parte 5}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}{Problema}
+  Como calcular o centroide de um conjunto de pontos?\pause
+
+  \begin{columns}
+    \begin{column}{0.35\linewidth}
+      \centering
+      \begin{tikzpicture}[scale=3.5]
+        \tikzset{point/.style={draw, fill=TXTC, circle, minimum size=5pt,inner sep=0pt, TXTC, outer sep=1pt}}
+        \foreach \x/\y in {
+            0.43820859423888425/0.5602517003765746,
+            0.8483245987749247/0.22016547793050834,
+            0.2844262312589583/0.009124179818488232,
+            0.5467579002856252/0.2413291938846639,
+            0.7994009526880929/0.03727842490367028,
+            0.710205138633686/0.8567908906108719,
+            0.21785056797410773/0.09629433864870829,
+            0.16833761034539085/0.38298050190699173,
+            0.18241629251581493/0.7897566001417992,
+            0.27968382873138964/0.6501116852426414,
+            0.6707744695205751/0.3096769327353118,
+            0.03652356452291916/0.43932036714464984,
+            0.5106877800413567/0.5842482649107987,
+            0.9970920384350768/0.6497641576890002,
+            0.2702320759435839/0.5964479454120887,
+            0.8243564062730954/0.41911196654055516,
+            0.4071181705605321/0.7077772949076827,
+            0.1605649335744881/0.6992169482393208,
+            0.5118710238692077/0.07351064298226107,
+            0.3207346183907208/0.96876667648163}{
+            \node[point] at (\x,\y) {};
+          }
+        \pause
+        \node[point, fill=AC, AC, minimum size=7pt] at (0.459278, 0.464596) {};
+        \pause
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.7\linewidth}
+      \uncover<4->{\lstinputlisting{codigos/centroide3.c}}
+    \end{column}
+  \end{columns}
+  \uncover<12->{E se tivermos mais do que \alert{\cod{MAX}} pontos?}
+\end{frame}
+
+\begin{frame}[<+->]{Ponteiros}
+
+  \action{Toda informação usada pelo programa está em algum lugar}
+  \begin{itemize}
+    \item Toda variável tem um \alert{endereço de memória}
+      \begin{itemize}
+        \item cada posição de um vetor também
+        \item cada membro de um registro também
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{Um ponteiro é uma variável que armazena um \alert{endereço}}
+  \begin{itemize}
+    \item para um tipo específico de informação
+      \begin{itemize}
+        \item \coda{int}, \coda{char}, \coda{double}, structs declaradas, etc.
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{Exemplos:}
+  \begin{itemize}
+    \item \coda{int *p;} declara um ponteiro para \alert{\cod{int}}
+      \begin{itemize}
+        \item seu nome é \coda{p}
+        \item seu tipo é \coda{int *}
+        \item armazena um endereço de um \coda{int}
+      \end{itemize}
+    \item \coda{double *q;} declara um ponteiro para \coda{double}
+    \item \coda{char *c;} declara um ponteiro para \coda{char}
+    \item \coda{struct data *d;} declara um ponteiro para \coda{struct data}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Operações com ponteiros}
+  \action{Operações básicas:}
+  \begin{itemize}
+    \item \alert{\cod{\&}} retorna o endereço de memória de uma variável (ex: \coda{\&x})
+      \begin{itemize}
+        \item ou posição de um vetor (ex: \coda{\&v[i]})
+        \item ou campo de uma \cod{struct} (ex: \coda{\&data.mes})
+        \item podemos salvar o endereço em um ponteiro (ex: \coda{p = \&x;})
+      \end{itemize}
+    \item \alert{\cod{*}} acessa o conteúdo no endereço indicado pelo ponteiro
+      \begin{itemize}
+        \item \coda{*p} onde \coda{p} é um ponteiro
+        \item podemos ler (ex: \coda{x = *p;}) ou escrever (ex: \coda{*p = 10;})
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+
+  \begin{columns}
+    \begin{column}{0.57\linewidth}
+      \lstinputlisting{codigos/exemplo1.c}
+    \end{column}
+    \begin{column}{0.43\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \node[cell, label=above:{\small \cod{endereco}}] at (0,0) {};
+        \node[cell, label=above:{\small \cod{variavel}}, label=-60:{\tiny $127$}] at (2.5,0) {$90$};
+        \uncover<7->{\node[cell, label=above:{\small \cod{endereco}}] at (0,0) {$127$};
+        \draw[-latex, bend right] (0.3,-0.2) to [bend right=50] (2.5,-0.25); }
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[<+->]{O que é um vetor em C?}
+  \action{Em C, se fizermos \coda{int v[100];}}
+  \begin{itemize}
+    \item temos uma variável chamada \coda{v}
+    \item que é, de fato, do tipo \coda{int * const}
+      \begin{itemize}
+        \item \coda{const} significa que não podemos fazer \coda{v = \&x;}
+        \item i.e., não podemos mudar o endereço armazenado em \coda{v}
+      \end{itemize}
+    \item e que aponta para o primeiro \coda{int} do vetor
+      \begin{itemize}
+        \item ou seja, \coda{v == \&v[0]}
+      \end{itemize}
+    \item de uma região da memória de 100 \coda{int}
+      \begin{itemize}
+        \item normalmente 400 bytes
+      \end{itemize}
+    \item dizemos que \coda{v} foi alocado estaticamente
+      \begin{itemize}
+        \item o compilador fez o trabalho
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{Podemos alocar vetores dinamicamente}
+  \begin{itemize}
+    \item nós alocamos e nós liberamos a região de memória
+    \item do tamanho que desejarmos
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{\cod{sizeof}, \cod{malloc} e \cod{free}}
+  \action{\coda{sizeof} devolve o tamanho em bytes de um tipo dado}
+  \begin{itemize}
+    \item \coda{sizeof(int)} (normalmente) devolve \coda{4}
+    \item \coda{sizeof(struct data)} - tamanho da \coda{struct data}
+      \begin{itemize}
+        \item é a soma dos tamanhos dos seus membros
+        \item e possivelmente mais alguns bytes para alinhamento
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{\coda{malloc} aloca dinamicamente a quantidade de bytes informada}
+  \begin{itemize}
+    \item devolve o endereço inicial da região de memória
+      \begin{itemize}
+        \item a região é sempre contígua
+      \end{itemize}
+    \item \coda{malloc(sizeof(struct data))} aloca a quantidade de bytes necessária para representar uma \coda{struct data}
+    \item \coda{malloc(10 * sizeof(int))} aloca a quantidade de bytes necessária para representar 10 \coda{int}s
+  \end{itemize}
+
+  \bigskip
+  \action{\coda{free} libera uma região de memória alocada dinamicamente}
+  \begin{itemize}
+    \item precisa ser um endereço que foi devolvido por \coda{malloc}
+    \item evita que vazemos memória (\emph{memory leak})
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Aritmética de ponteiros}
+  \action{Podemos realizar operações aritméticas em ponteiros:}
+  \begin{itemize}
+    \item somar ou subtrair um número inteiro
+    \item também incremento (\coda{++}) e decremento (\coda{--})
+    \item o compilador considera o tamanho do tipo apontado
+    \item ex: somar \alert{$1$} em um ponteiro para \alert{\cod{int}} faz com que o endereço pule \alert{\cod{sizeof(int)}} bytes
+  \end{itemize}
+
+  \medskip
+
+  \action{\lstinputlisting{codigos/exemplo4.c}}
+
+  \medskip
+
+  \action{\centering
+    \begin{tikzpicture}
+      \foreach \i in {0,1,...,4} {
+      \pgfmathtruncatemacro\result{1000 + 4*\i}
+      \node[cell, fill=blue!10, label=-60:{\tiny \cod{\result}}] at (0+1.5*\i,-0.5) {\scriptsize \cod{vetor[\i]}};
+      }
+
+      \node[cell, label=below:{\scriptsize \cod{vetor}}] (vetor) at (0,-1.75) {\scriptsize\cod{1000}};
+      \draw[-latex] (vetor) to (0,-0.75);
+
+      \node[cell, label=below:{\scriptsize \cod{ponteiro}}] (ponteiro) at (4.5, -1.75) {\scriptsize\cod{1012}};
+      \draw[-latex] (ponteiro) to (4.5,-0.75);
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[<+->]{Ponteiros e vetores}
+  \action{Se tivermos um ponteiro \coda{p}, podemos escrever \coda{p[i]}}
+  \begin{itemize}
+    \item como se fosse um vetor
+    \item é o mesmo que escrever \coda{*(p + i)}
+  \end{itemize}
+
+  \action{\lstinputlisting{codigos/exemplo3.c}}
+\end{frame}
+
+\begin{frame}[<+->]{Organização da memória}
+  \action{A memória de um programa é dividida em duas partes:}
+  \begin{itemize}
+    \item \alert{Pilha:} onde são armazenadas as variáveis
+      \begin{itemize}
+        \item Em geral, espaço limitado (ex: 8MB)
+      \end{itemize}
+    \item \alert{Heap:} onde são armazenados os outros dados
+      \begin{itemize}
+        \item Do tamanho da memória RAM disponível
+      \end{itemize}
+  \end{itemize}
+
+  \medskip
+
+  \action{Alocação estática (variáveis):}
+  \begin{itemize}
+    \item O compilador reserva um espaço na pilha
+    \item A variável é acessada por um nome bem definido
+    \item O espaço é liberado quando a função termina
+  \end{itemize}
+
+  \medskip
+
+  \action{Alocação dinâmica:}
+  \begin{itemize}
+    \item \alert{\cod{malloc}} reserva um número de bytes no heap
+    \item Devemos guardar o endereço da variável com um ponteiro
+    \item O espaço deve ser liberado usando \alert{\cod{free}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Receita para alocação dinâmica de vetores}
+  \begin{itemize}
+    \item Incluir a biblioteca \alert{\cod{stdlib.h}}
+    \item Declare o ponteiro com o tipo apropriado
+      \begin{itemize}
+        \item ex: \coda{int *v;}
+      \end{itemize}
+    \item Aloque a região de memória com \coda{malloc}
+      \begin{itemize}
+        \item O tamanho de um tipo pode ser obtido com \alert{\cod{sizeof}}
+        \item ex: \coda{v = malloc(n * sizeof(int));}
+      \end{itemize}
+    \item Verifique se acabou a memória comparando com \alert{\cod{NULL}}
+      \begin{itemize}
+        \item use a função \coda{exit} para sair do programa
+        \item ex: \lstinputlisting{codigos/memoria.c}
+      \end{itemize}
+    \item Libere a memória após a utilização com \alert{\cod{free}}
+      \begin{itemize}
+        \item ex: \coda{free(v);}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Voltando ao centroide}\pause
+  \lstinputlisting[basicstyle=\fontsize{0.29cm}{0.31cm}\selectfont\ttfamily]{codigos/centroide4.c}
+\end{frame}
+
+\begin{frame}[<+->]{Ponteiros, vetores e funções}
+  \action{Funções}
+  \begin{itemize}
+    \item não podem devolver vetores
+      \begin{itemize}
+        \item não podemos escrever \coda{int [] funcao(...)}
+      \end{itemize}
+    \item mas podem devolver ponteiros
+      \begin{itemize}
+        \item podemos escrever \coda{int * funcao(...)}
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \bigskip
+
+  \action{\alert{Nunca} devolva o endereço de uma variável local}
+  \begin{itemize}
+    \item Ela deixará de existir quando a função terminar
+    \item Ou seja, nunca devolva um vetor alocado estaticamente
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[<+->]{Exercício - Alocando vetor}
+  \action{Escreva uma função que dado um \coda{int} \alert{$n$}, aloca um vetor de \coda{double} com \alert{$n$} posições zerado.}
+
+  \bigskip
+  \bigskip
+
+  \action{\lstinputlisting[firstline=1, lastline=7]{codigos/vetor.c}}
+
+\end{frame}
+
+\begin{frame}[<+->]{Exercício - Imprimindo vetores}
+  \action{Queremos fazer uma função que imprime um vetor}
+  \begin{itemize}
+    \item para vetores alocados estaticamente ou dinamicamente
+  \end{itemize}
+
+  \bigskip
+  \action{Como vetores são ponteiros, basta receber um ponteiro!}
+  \bigskip
+
+  \action{\lstinputlisting[firstline=9, lastline=14]{codigos/vetor.c}}
+
+  \bigskip
+
+  \begin{columns}
+    \begin{column}[t]{0.5\linewidth}
+      Alocado dinamicamente
+      \action{\lstinputlisting[firstline=16, lastline=18]{codigos/vetor.c}}
+    \end{column}
+    \begin{column}[t]{0.5\linewidth}
+      Alocado estaticamente
+      \action{\lstinputlisting[firstline=20, lastline=22]{codigos/vetor.c}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[<+->]{Ponteiros e Structs}
+  \action{Frequentemente alocamos uma \coda{struct} dinamicamente}
+  \begin{itemize}
+    \item Elas serão o elemento básico de muitas das EDs
+    \item Teremos o ponteiro para uma \coda{struct}
+    \item e precisaremos acessar um dos seus campos...
+  \end{itemize}
+
+  \bigskip
+  \action{Imagine que temos um ponteiro \coda{d} do tipo \coda{struct data *}}
+  \begin{itemize}
+    \item acessamos o campo \coda{mes} fazendo \coda{(*d).mes}
+      \begin{itemize}
+        \item veja o endereço armazenado em \coda{d}
+        \item vá para essa posição de memória (onde está o registro)
+        \item acesse o campo \coda{mes} deste registro
+      \end{itemize}
+    \item porém isso é tão comum que temos um atalho: \coda{d->mes}
+      \begin{itemize}
+        \item significa exatamente o mesmo que \coda{(*d).mes}
+        \item é um açúcar sintático do C
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Exercício}
+  \begin{itemize}
+    \item Declare uma \coda{struct} que armazena informações de notas de uma
+      turma. Essa estrutura deve armazenar o número de alunos, as notas das
+      provas e a maior nota.
+
+    \item Depois faça um programa que leia todos os dados e imprima a maior nota.
+  \end{itemize}
+\end{frame}
+
+\end{document}

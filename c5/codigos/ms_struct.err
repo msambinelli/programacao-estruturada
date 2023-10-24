@@ -1,0 +1,61 @@
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c: In function ‘main’:
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:24:22: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘struct aluno *’ [-Wformat=]
+   24 |   printf("marvin: %llu\n", marvin);
+      |                   ~~~^     ~~~~~~
+      |                      |     |
+      |                      |     struct aluno *
+      |                      long long unsigned int
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:25:26: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘struct aluno *’ [-Wformat=]
+   25 |   printf("&(*marvin): %llu\n", &(*marvin));
+      |                       ~~~^     ~~~~~~~~~~
+      |                          |     |
+      |                          |     struct aluno *
+      |                          long long unsigned int
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:26:32: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+   26 |   printf("&(*marvin).sexo): %llu\n", &(*marvin).sexo);
+      |                             ~~~^     ~~~~~~~~~~~~~~~
+      |                                |     |
+      |                                |     char *
+      |                                long long unsigned int
+      |                             %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:27:37: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+   27 |   printf("&(*marvin).humanoide): %llu\n", &(*marvin).humanoide);
+      |                                  ~~~^     ~~~~~~~~~~~~~~~~~~~~
+      |                                     |     |
+      |                                     |     char *
+      |                                     long long unsigned int
+      |                                  %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:28:33: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   28 |   printf("&(*marvin).idade): %llu\n", &(*marvin).idade);
+      |                              ~~~^     ~~~~~~~~~~~~~~~~
+      |                                 |     |
+      |                                 |     int *
+      |                                 long long unsigned int
+      |                              %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:29:37: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+   29 |   printf("&(*marvin).UF_origem): %llu\n", &(*marvin).UF_origem);
+      |                                  ~~~^     ~~~~~~~~~~~~~~~~~~~~
+      |                                     |     |
+      |                                     |     char *
+      |                                     long long unsigned int
+      |                                  %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:30:30: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   30 |   printf("&(*marvin).ra): %llu\n", &(*marvin).ra);
+      |                           ~~~^     ~~~~~~~~~~~~~
+      |                              |     |
+      |                              |     int *
+      |                              long long unsigned int
+      |                           %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:31:38: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+   31 |   printf("&(*marvin).UF2_origem): %llu\n", &(*marvin).UF2_origem);
+      |                                   ~~~^     ~~~~~~~~~~~~~~~~~~~~~
+      |                                      |     |
+      |                                      |     char *
+      |                                      long long unsigned int
+      |                                   %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:20:14: warning: unused parameter ‘argc’ [-Wunused-parameter]
+   20 | int main(int argc, char *argv[])
+      |          ~~~~^~~~
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/ms_struct.c:20:26: warning: unused parameter ‘argv’ [-Wunused-parameter]
+   20 | int main(int argc, char *argv[])
+      |                    ~~~~~~^~~~~~

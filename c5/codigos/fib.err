@@ -1,0 +1,61 @@
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c: In function ‘fib2’:
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:12:25: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   12 |   printf("fib2 addr: %llu\n", &a);
+      |                      ~~~^     ~~
+      |                         |     |
+      |                         |     int *
+      |                         long long unsigned int
+      |                      %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:10:15: warning: unused parameter ‘n’ [-Wunused-parameter]
+   10 | void fib2(int n) {
+      |           ~~~~^
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c: In function ‘fib1’:
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:17:25: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   17 |   printf("fib1 addr: %llu\n", &a);
+      |                      ~~~^     ~~
+      |                         |     |
+      |                         |     int *
+      |                         long long unsigned int
+      |                      %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:15:15: warning: unused parameter ‘n’ [-Wunused-parameter]
+   15 | void fib1(int n) {
+      |           ~~~~^
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c: In function ‘main’:
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:24:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   24 |   printf("fib addr: %llu\n", &a);
+      |                     ~~~^     ~~
+      |                        |     |
+      |                        |     int *
+      |                        long long unsigned int
+      |                     %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:28:12: warning: implicit declaration of function ‘malloc’ [-Wimplicit-function-declaration]
+   28 |   int *p = malloc(sizeof(int) * 10);
+      |            ^~~~~~
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:9:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘malloc’
+    8 | #include <stdio.h>
+  +++ |+#include <stdlib.h>
+    9 | 
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:28:12: warning: incompatible implicit declaration of built-in function ‘malloc’ [-Wbuiltin-declaration-mismatch]
+   28 |   int *p = malloc(sizeof(int) * 10);
+      |            ^~~~~~
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:28:12: note: include ‘<stdlib.h>’ or provide a declaration of ‘malloc’
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:29:22: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   29 |   printf("p addr: %llu\n", p);
+      |                   ~~~^     ~
+      |                      |     |
+      |                      |     int *
+      |                      long long unsigned int
+      |                   %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:32:22: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘int *’ [-Wformat=]
+   32 |   printf("b addr: %llu\n", b);
+      |                   ~~~^     ~
+      |                      |     |
+      |                      |     int *
+      |                      long long unsigned int
+      |                   %ls
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:21:14: warning: unused parameter ‘argc’ [-Wunused-parameter]
+   21 | int main(int argc, char *argv[])
+      |          ~~~~^~~~
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/fib.c:21:26: warning: unused parameter ‘argv’ [-Wunused-parameter]
+   21 | int main(int argc, char *argv[])
+      |                    ~~~~~~^~~~~~

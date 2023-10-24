@@ -1,0 +1,379 @@
+%!TEX program = xelatex
+\documentclass{beamer}
+\input{../common.tex}
+\usepackage[brazil]{babel} % necessário para o plugin LTeX
+
+\tikzset{cell/.style = {draw, rectangle, minimum width=1.5cm, minimum height=0.5cm}}
+
+\title{MC-202\\
+Curso de C --- Parte 6}
+
+
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}[<+->]{Relembrando: ponteiros}
+
+  \action{Toda informação usada pelo programa está em algum lugar}
+  \begin{itemize}
+    \item Toda variável tem um \alert{endereço de memória}
+      \begin{itemize}
+        \item cada posição de um vetor também
+        \item cada membro de um registro também
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{Um ponteiro é uma variável que armazena um \alert{endereço}}
+  \begin{itemize}
+    \item para um tipo específico de informação
+      \begin{itemize}
+        \item \coda{int}, \coda{char}, \coda{double}, structs declaradas, etc
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{Exemplos:}
+  \begin{itemize}
+    \item \coda{int *p;} declara um ponteiro para \alert{\cod{int}}
+      \begin{itemize}
+        \item seu nome é \coda{p}
+        \item seu tipo é \coda{int *}
+        \item armazena um endereço de um \coda{int}
+      \end{itemize}
+    \item \coda{double *q;} declara um ponteiro para \coda{double}
+    \item \coda{char *c;} declara um ponteiro para \coda{char}
+    \item \coda{struct data *d;} declara um ponteiro para \coda{struct data}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Relembrando: operações com ponteiros}
+  \action{Operações básicas:}
+  \begin{itemize}
+    \item \alert{\cod{\&}} retorna o endereço de memória de uma variável (ex: \coda{\&x})
+      \begin{itemize}
+        \item ou posição de um vetor (ex: \coda{\&v[i]})
+        \item ou campo de uma \cod{struct} (ex: \coda{\&data.mes})
+        \item podemos salvar o endereço em um ponteiro (ex: \coda{p = \&x;})
+      \end{itemize}
+    \item \alert{\cod{*}} acessa o conteúdo no endereço indicado pelo ponteiro
+      \begin{itemize}
+        \item \coda{*p} onde \coda{p} é um ponteiro
+        \item podemos ler (ex: \coda{x = *p;}) ou escrever (ex: \coda{*p = 10;})
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+
+  \begin{columns}
+    \begin{column}{0.6\linewidth}
+      \lstinputlisting{codigos/exemplo1.c}
+    \end{column}
+    \begin{column}{0.4\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \node[cell, label=above:{\small \cod{endereco}}] at (0,0) {};
+        \node[cell, label=above:{\small \cod{variavel}}, label=-60:{\tiny $127$}] at (2.5,0) {$90$};
+        \uncover<7->{\node[cell, label=above:{\small \cod{endereco}}] at (0,0) {$127$};
+        \draw[-latex, bend right] (0.3,-0.2) to [bend right=50] (2.5,-0.25); }
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[<+->]{Passagem de parâmetros em Python}
+  \action{Vamos analisar três códigos escritos em Python}
+
+  \begin{columns}
+    \begin{column}[t]{0.33\linewidth}
+      \lstinputlisting[language=Python]{codigos/funcao1.py}
+    \end{column}
+    \begin{column}[t]{0.33\linewidth}
+      \lstinputlisting[language=Python]{codigos/funcao2.py}
+    \end{column}
+    \begin{column}[t]{0.33\linewidth}
+      \lstinputlisting[language=Python]{codigos/funcao3.py}
+    \end{column}
+  \end{columns}
+
+  \bigskip
+
+  \action{O que é impresso?}
+  \begin{description}
+    \item[esquerda:] \coda{10}
+    \item[meio:] \coda{[1, 2, 3]}
+    \item[direita:] \coda{[1, 2]}
+  \end{description}
+\end{frame}
+
+\begin{frame}[<+->]{Passagem de parâmetros em C}
+  \action{Considere o seguinte código:}
+  \action{\lstinputlisting[firstline=4,lastline=16]{codigos/param.c}}
+
+  \bigskip
+
+  \action{O que é impresso na linha 11?}
+  \begin{itemize}
+    \item \alert{\cod{0}} ou \alert{\cod{10}}?
+  \end{itemize}
+
+  \bigskip
+
+  \action{O valor da variável local \alert{\cod{n}} da função \alert{\cod{main}} é \alert{copiado} para o parâmetro (variável local) \alert{\cod{n}} da função \alert{\cod{imprime\_invertido}}}
+  \begin{itemize}
+    \item O valor de \alert{\cod{n}} em \alert{\cod{main}} não é alterado, continua \alert{\cod{10}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Passagem de parâmetros por cópia}
+  \action{\alert{Toda} passagem de parâmetros em C é feita por \alert{cópia}}
+  \begin{itemize}
+    \item O valor da variável (ou constante) da chamada da função é \alert{copiado} para o parâmetro
+      \begin{itemize}
+        \item \alert{\cod{imprime\_invertido(v, n)}} não altera o valor de \alert{\cod{n}}
+      \end{itemize}
+    \item Mesmo se variável e parâmetro tiverem o mesmo nome
+  \end{itemize}
+
+  \bigskip
+
+  \action{Mas e se passarmos um vetor?}
+  \action{\lstinputlisting[firstline=18, lastline=22]{codigos/param.c}}
+
+  \medskip
+
+  \action{Quando passamos um vetor:}
+  \begin{itemize}
+    \item na verdade, passamos o endereço do vetor por cópia
+    \item ou seja, o conteúdo do vetor não é passado para a função
+    \item por isso, mudanças dentro da função afetam o vetor
+  \end{itemize}
+
+  \medskip
+
+  \action{\alert{Toda} passagem de parâmetros em C é feita por \alert{cópia}}
+\end{frame}
+
+\begin{frame}[<+->]{Passagem de parâmetros em C}
+  \action{Vamos analisar o código anterior modificado:}
+  \action{\lstinputlisting[firstline=4,lastline=16]{codigos/param2.c}}
+
+  \bigskip
+
+  \action{O que é impresso na linha 11?}
+  \begin{itemize}
+    \item \alert{\cod{0}} ou \alert{\cod{10}}?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Alterando variáveis com funções}
+  \action{Quando passamos um vetor para uma função}
+  \begin{itemize}
+    \item sabemos onde o vetor está na memória
+    \item assim conseguimos modificá-lo\dots
+  \end{itemize}
+
+  \bigskip
+
+  \action{Podemos fazer o mesmo para qualquer variável!}
+  \begin{itemize}
+    \item basta saber onde a variável está na memória
+      \begin{itemize}
+        \item usando o operador \coda{\&}
+      \end{itemize}
+    \item por exemplo, o \coda{scanf} modifica o valor das variáveis
+      \begin{itemize}
+        \item porque recebe os endereços da variáveis
+        \item ex: \coda{scanf("\%d \%lf", \&n, \&x);}
+      \end{itemize}
+    \item o \coda{scanf} recebe um ponteiro com o endereço da variável
+      \begin{itemize}
+        \item e usa o operador \coda{*} para modificar a variável
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+  \action{Por que quando fazemos \coda{scanf} de uma string não usamos \coda{\&}?}
+  \begin{itemize}
+    \item A string é um vetor de \coda{char}
+    \item e o vetor já é um ponteiro
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Referências em Python}
+  \action{O Python envia a referência do objeto para a função}
+  \begin{itemize}
+    \item e por isso que podemos modificar o objeto
+      \begin{itemize}
+        \item se o tipo for mutável..
+      \end{itemize}
+    \item é algo parecido com o que o C faz com vetores
+    \item a função sabe onde o objeto está na memória
+      \begin{itemize}
+        \item e por isso pode modificá-lo
+      \end{itemize}
+    \item e pode ser mais rápido do que copiar todo o objeto
+  \end{itemize}
+
+  \bigskip
+  \action{É o que chamamos de passagem por referência}
+  \begin{itemize}
+    \item E que no C é simulado usando ponteiros
+    \item O Python está fazendo o mesmo que fazemos em C
+      \begin{itemize}
+        \item mas esconde isso do programador
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[<+->]{Funções com várias saídas}
+  \action{Por que usar passagem por referência?}
+  \begin{itemize}
+    \item Porque queremos fazer uma função com várias saídas
+  \end{itemize}
+
+  \bigskip
+  \action{\lstinputlisting[firstline=8]{codigos/min_max.c}}
+\end{frame}
+
+\begin{frame}[<+->]{Passagem por referência pode ser mais rápida}
+  \action{Por que usar passagem por referência?}
+  \begin{itemize}
+    \item Porque pode ser mais rápido do que copiar a informação
+  \end{itemize}
+
+  \bigskip
+  \action{\lstinputlisting[firstline=3, lastline=16]{codigos/big_struct.c}}
+
+  \bigskip
+  \action{\coda{struct aluno} é uma struct de \coda{344} bytes, mas\\ \coda{struct aluno *} tem apenas \coda{8} bytes}
+\end{frame}
+
+\begin{frame}[<+->]{Passagem por referência pode fazer mais sentido}
+  \action{Por que usar passagem por referência?}
+  \begin{itemize}
+    \item Se queremos modificar uma \coda{struct}
+    \item então talvez faça mais sentido ter uma função \coda{void}
+    \item e passar a \coda{struct} por referência
+  \end{itemize}
+
+  \bigskip
+
+  \action{\lstinputlisting[firstline=3, lastline=12]{codigos/big_struct.c}}
+  \action{\lstinputlisting[firstline=18, lastline=20]{codigos/big_struct.c}}
+\end{frame}
+
+\begin{frame}[<+->]{Alternativa}
+  \action{Mas muitas vezes podemos evitar passagem por referência}
+  \begin{itemize}
+    \item Se não estamos preocupados com tempo
+    \item E não precisamos modificar mais de uma variável
+  \end{itemize}
+
+  \begin{columns}
+    \begin{column}[t]{0.5\linewidth}
+      \lstinputlisting[firstline=1, lastline=10]{codigos/evitando.c}
+    \end{column}
+    \begin{column}[t]{0.5\linewidth}
+      \lstinputlisting[firstline=13, lastline=22]{codigos/evitando.c}
+    \end{column}
+  \end{columns}
+
+  \bigskip
+  \action{Idem para o exemplo anterior:}
+  \begin{itemize}
+    \item ao invés de \coda{atualiza\_email(\&mc202[i], email);}
+    \item fazemos \coda{mc202[i] = atualiza\_email(mc202[i], email);}
+  \end{itemize}
+
+  \medskip
+  \action{Durante o curso, sempre que possível, usaremos essa opção!}
+\end{frame}
+
+\begin{frame}[<+->]{Alocação dinâmica de matrizes}
+  \action{Uma matriz em C é como um vetor de vetores}
+  \begin{itemize}
+    \item \coda{int matriz[30][50];} é um vetor
+      \begin{itemize}
+        \item com \coda{30} linhas
+      \end{itemize}
+    \item cada \coda{matriz[i]} é como um vetor
+      \begin{itemize}
+        \item com 50 posições
+      \end{itemize}
+  \end{itemize}
+
+  \bigskip
+
+  \action{E vetores são ponteiros em C}
+  \begin{itemize}
+    \item ou seja, cada linha pode ser vista como um ponteiro
+    \item e a matriz como um vetor de ponteiros
+  \end{itemize}
+
+  \bigskip
+
+  \action{\begin{center}
+      \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
+        \foreach \i in {0,...,4} {
+            \node[fill=yellow!60, draw, minimum width=1cm, minimum height=1cm, outer sep=2pt] (l\i) at (-2,-\i) {};
+            \foreach \j in {0,...,6} {
+                \node[fill=yellow!60, draw, minimum width=1cm, minimum height=0.8cm, outer sep=2pt] (c\i\j) at (\j,-\i) {$A_{\i\j}$};
+              }
+            \draw[->] (l\i) -- (c\i0);
+          }
+      \end{tikzpicture}
+    \end{center}}
+\end{frame}
+
+\begin{frame}[<+->]{Alocando}
+  \action{Qual o tipo de uma matriz alocada dinamicamente?}
+  \begin{itemize}
+    \item um vetor de \coda{int} alocado dinamicamente é do tipo \coda{int *}
+    \item uma matriz é um vetor de vetores
+      \begin{itemize}
+        \item um vetor de \coda{int *}
+      \end{itemize}
+    \item portanto, uma matriz é do tipo \coda{int **}
+      \begin{itemize}
+        \item armazena um endereço de um ponteiro de \coda{int}
+      \end{itemize}
+  \end{itemize}
+
+  \action{\lstinputlisting{codigos/matriz.c}}
+\end{frame}
+
+\begin{frame}[<+->]{Ponteiros para ponteiros}
+  \action{Uma matriz é um vetor de vetores}
+  \action{\lstinputlisting[firstline=36,lastline=42]{codigos/param.c}}
+
+  \medskip
+
+  \action{Simular passagem por referência de um ponteiro}
+  \action{\lstinputlisting[firstline=29,lastline=34]{codigos/param.c}}
+
+  \bigskip
+  \action{Precisa ficar claro qual é o objetivo na hora de programar:}
+  \begin{itemize}
+    \item No primeiro caso, temos um vetor de vetores
+    \item No segundo caso, queremos apontar para outro vetor
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Exercício}
+  Faça uma função que dado um vetor \alert{$v$} de \coda{int}s e um \coda{int} $n$, seleciona apenas os elementos de \alert{$v$} que são positivos
+  \begin{itemize}
+    \item guarde os elementos positivos em um outro vetor
+    \item você precisará saber o tamanho desse novo vetor\dots
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Exercício}
+  Faça uma função que, dados \alert{$m$}, \alert{$n$} e \alert{$k$}, aloca e devolve uma matriz tridimensional \alert{$m \times n \times k$} de \coda{double}s.
+\end{frame}
+
+\end{document}

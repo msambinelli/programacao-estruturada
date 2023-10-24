@@ -1,0 +1,25 @@
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/exemplo4_completo.c: In function ‘main’:
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/exemplo4_completo.c:9:14: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+    9 |   printf("%llu\n", vetor);
+      |           ~~~^     ~~~~~
+      |              |     |
+      |              |     char *
+      |              long long unsigned int
+      |           %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/exemplo4_completo.c:10:14: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+   10 |   printf("%llu\n", vetor + 1);
+      |           ~~~^     ~~~~~~~~~
+      |              |           |
+      |              |           char *
+      |              long long unsigned int
+      |           %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/exemplo4_completo.c:11:14: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘char *’ [-Wformat=]
+   11 |   printf("%llu\n", vetor + 2);
+      |           ~~~^     ~~~~~~~~~
+      |              |           |
+      |              |           char *
+      |              long long unsigned int
+      |           %s
+/home/msambinelli/Insync/UFABC/Courses/Programacao.Estruturada/Fork.do.Rafael/slides/c5/codigos/exemplo4_completo.c:6:8: warning: unused variable ‘ponteiro’ [-Wunused-variable]
+    6 |   int *ponteiro;
+      |        ^~~~~~~~
